@@ -1,0 +1,87 @@
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
+import User from "../models/user.model.js";
+
+import { loginSchema, registerSchema } from "../zod/auth.schema.js";
+
+export const registerUser = async (req, res) => {
+  try {
+    const { email, password, name } = registerSchema.parse(req.body);
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      res.status(409).json({ error: "Looks like you already have an account. Log in!" });
+    }
+
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    const user = await User.create({
+      name,
+      email,
+      password: hashPassword,
+    });
+
+    const token = jwt.sign(
+      { email: user.email, id: user._id },
+      process.env.TOKEN_SECRET_KEY,
+      { expiresIn: "1d" }
+    );
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
+
+    res.status(201).json({ success: true });
+  } catch (error) {
+    console.error("Registration error:", error.message);
+    res.status(500).json({ error: JSON.parse(error.message) });
+  }
+};
+
+export const loginUser = async (req, res) => {
+  try {
+    const { email, password } = loginSchema.parse(req.body);
+
+    const existingUser = await User.findOne({ email });
+    if (!existingUser) {
+      res.status(404).json({ error: "User does not exist" });
+    }
+
+    const isMatch = await bcrypt.compare(password, existingUser.password);
+    if (!isMatch) {
+      res.status(401).json({ error: "Incorrect password" });
+    }
+
+    const token = jwt.sign(
+      { email: existingUser.email, id: existingUser._id },
+      process.env.TOKEN_SECRET_KEY,
+      { expiresIn: "1d" }
+    );
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.error("Login error:", error.message);
+    res.status(500).json({ error: JSON.parse(error.message) });
+  }
+};
+
+export const logoutUser = async (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
+
+  res.status(200).json({ success: true });
+};
