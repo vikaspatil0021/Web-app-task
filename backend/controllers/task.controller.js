@@ -1,14 +1,17 @@
 import Task from "../models/task.model.js";
 
+import { createTaskSchema, updateTaskSchema } from "../zod/task.schema.js";
+
 export const createTask = async (req, res) => {
   try {
+    const body = createTaskSchema.parse(req.body);
     const task = await Task.create({
-      ...req.body,
+      ...body,
       user: req.user.id,
     });
     res.status(201).json(task);
   } catch (err) {
-    res.status(400).json({ message: "Task creation failed" });
+    res.status(400).json({ error: JSON.parse(err.message) });
   }
 };
 
@@ -17,13 +20,15 @@ export const getTasks = async (req, res) => {
     const tasks = await Task.find({ user: req.user.id });
     res.status(200).json(tasks);
   } catch (err) {
-    res.status(500).json({ message: "Failed to fetch tasks" });
+    res.status(500).json({ error: JSON.parse(err.message) });
   }
 };
 
 export const updateTask = async (req, res) => {
   try {
-    const task = await Task.findOneAndUpdate({ _id: req.params.id }, req.body, {
+    const body = updateTaskSchema.parse(req.body);
+
+    const task = await Task.findOneAndUpdate({ _id: req.params.id }, body, {
       new: true,
     });
 
@@ -33,7 +38,7 @@ export const updateTask = async (req, res) => {
 
     res.status(200).json(task);
   } catch (err) {
-    res.status(400).json({ message: "Update failed" });
+    res.status(400).json({ error: JSON.parse(err.message) });
   }
 };
 
@@ -49,6 +54,6 @@ export const deleteTask = async (req, res) => {
 
     res.status(200).json({ message: "Task deleted" });
   } catch (err) {
-    res.status(500).json({ message: "Delete failed" });
+    res.status(500).json({ error: JSON.parse(err.message) });
   }
 };
