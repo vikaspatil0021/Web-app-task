@@ -7,6 +7,9 @@ A secure authentication system with a task dashboard supporting CRUD operations 
 ---
 
 ## Screenshots
+![login](https://github.com/user-attachments/assets/f9671e93-d649-4cae-82ac-788e4fbb828e)
+![reg](https://github.com/user-attachments/assets/39840d77-4916-4552-8a64-0d5bda3b7617)
+![dash](https://github.com/user-attachments/assets/266c7832-d41c-4181-b101-b4dd4acff449)
 
 
 ---
