@@ -27,7 +27,7 @@ export default function Login() {
   const onSubmit = async (data: LoginFormData) => {
     try {
       const result = await loginUser(data);
-      
+
       setUser(result?.data?.user);
       navigate("/dashboard");
     } catch (error: any) {
@@ -41,6 +41,7 @@ export default function Login() {
         <h2 className="text-2xl font-semibold text-center mb-6">Login</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          {/* Email */}
           <div>
             <label className="block text-sm font-medium mb-1">Email</label>
             <input
@@ -78,6 +79,7 @@ export default function Login() {
           >
             {isSubmitting ? "Logging in..." : "Login"}
           </button>
+
           <div className="w-full justify-center flex gap-3">
             Dont have an account?
             <Link to="/register" className="underline">
@@ -85,6 +87,7 @@ export default function Login() {
             </Link>
           </div>
         </form>
+
         <div className="w-full justify-center flex text-red-500">
           {api_error}
         </div>

@@ -1,3 +1,5 @@
+// For form validations
+
 import { z } from "zod";
 
 const passwordRegex =

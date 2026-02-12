@@ -12,7 +12,7 @@ function App() {
     <AppShell>
       <BrowserRouter>
         <Routes>
-          {/* Public Routes */}
+          {/* Public Route Wrapper */}
           <Route element={<PublicRoute />}>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />

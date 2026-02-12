@@ -91,6 +91,7 @@ export default function Register() {
           >
             {isSubmitting ? "Creating account..." : "Register"}
           </button>
+
           <div className="w-full justify-center flex gap-3">
             Already have an account?{" "}
             <Link to="/login" className="underline">
@@ -98,6 +99,7 @@ export default function Register() {
             </Link>
           </div>
         </form>
+        
         <div className="w-full justify-center flex text-red-500">
           {api_error}
         </div>
