@@ -45,7 +45,7 @@ export default function Dashboard() {
             />
             
             {/* Tasks list */}
-            {filteredData.length === 0 && tasks && (
+            {filteredData.length === 0 && (search === "" && filter === "none") && tasks && (
               <TaskList tasks={tasks as Task[]} />
             )}
             {filteredData.length > 0 && (
