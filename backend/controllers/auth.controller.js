@@ -11,7 +11,9 @@ export const registerUser = async (req, res) => {
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      res.status(409).json({ error: "Looks like you already have an account. Log in!" });
+      res
+        .status(409)
+        .json({ error: "Looks like you already have an account. Log in!" });
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
@@ -35,9 +37,8 @@ export const registerUser = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 
-    res.status(201).json({ success: true });
+    res.status(201).json({ success: true, user });
   } catch (error) {
-    console.error("Registration error:", error.message);
     res.status(500).json({ error: JSON.parse(error.message) });
   }
 };
@@ -69,9 +70,8 @@ export const loginUser = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 
-    res.status(200).json({ success: true });
+    res.status(200).json({ success: true, user: existingUser });
   } catch (error) {
-    console.error("Login error:", error.message);
     res.status(500).json({ error: JSON.parse(error.message) });
   }
 };
