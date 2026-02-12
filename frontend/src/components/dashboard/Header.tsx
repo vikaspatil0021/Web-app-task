@@ -17,13 +17,11 @@ const Header = ({ userName }: { userName: string }) => {
 
   return (
     <header className="flex items-center justify-between mb-6">
-      {/* Left Side */}
       <div>
         <h1 className="text-xl font-semibold text-gray-800">Task Dashboard</h1>
         <p className="text-sm text-gray-500">Welcome, {userName}</p>
       </div>
 
-      {/* Right Side */}
       <button
         onClick={handleLogout}
         className="px-4 py-2 text-sm font-medium text-white bg-black rounded-lg hover:bg-gray-800 transition"

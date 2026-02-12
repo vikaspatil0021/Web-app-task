@@ -1,9 +1,5 @@
-type TaskToolbarProps = {
-  search: string;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
-  filter: string;
-  setFilter: React.Dispatch<React.SetStateAction<string>>;
-};
+import type { TaskToolbarProps } from "../../types/task.type";
+
 
 export default function TaskToolbar({
   search,

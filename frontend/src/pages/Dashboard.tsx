@@ -27,12 +27,15 @@ export default function Dashboard() {
       <div className="w-full p-4">
         {/* Header */}
         <Header userName={user?.name as string} />
+
         {/* Profile */}
         <ProfileCard user={user!} />
         <div className="grid grid-cols-1 md:grid-cols-3 md:gap-3 my-6">
+
           {/* Create task form */}
           <TaskForm />
           <div className="col-span-2 w-full overflow-hidden md:mt-0 mt-4 p-1">
+
             {/* Search and filter functionality */}
             <TaskToolbar
               filter={filter}
@@ -40,6 +43,7 @@ export default function Dashboard() {
               search={search}
               setSearch={setSearch}
             />
+            
             {/* Tasks list */}
             {filteredData.length === 0 && tasks && (
               <TaskList tasks={tasks as Task[]} />

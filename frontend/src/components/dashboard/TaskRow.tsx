@@ -1,46 +1,21 @@
-import { mutate } from "swr/_internal";
 
 import { deleteTask, updateTask } from "../../api/task.api";
 
-import type { Task } from "../../types/task.type";
-import { useState } from "react";
-
-interface TaskRowProps {
-  task: Task;
-  index: number;
-}
+import type { TaskRowProps } from "../../types/task.type";
+import { useTaskRow } from "../../hooks/useTaskRow";
 
 const TaskRow = ({ task, index }: TaskRowProps) => {
   const isEven = index % 2 === 0;
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedTask, setEditedTask] = useState({
-    title: task.title,
-    description: task.description,
-  });
-
-  const handleDelete = async () => {
-    await deleteTask(task?._id);
-    mutate("getAllTasks");
-  };
-
-  const handleEdit = () => setIsEditing(true);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditedTask({ ...editedTask, [e?.target?.name!]: e.target.value });
-  };
-
-  const handleCancel = () => {
-    setEditedTask({ title: task.title, description: task.description });
-    setIsEditing(false);
-  };
-
-  const handleSave = async () => {
-    
-    await updateTask(task._id, editedTask);
-    mutate("getAllTasks");
-    setIsEditing(false);
-  };
+  const {
+    isEditing,
+    editedTask,
+    handleEdit,
+    handleChange,
+    handleCancel,
+    handleSave,
+    handleDelete,
+  } = useTaskRow(task, { deleteTask, updateTask });
 
   return (
     <div
@@ -60,6 +35,7 @@ const TaskRow = ({ task, index }: TaskRowProps) => {
           task.title
         )}
       </div>
+
       {/* Description */}
       <div className="col-span-5 text-gray-500 pe-5">
         {isEditing ? (
